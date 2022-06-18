@@ -1,6 +1,6 @@
 # Hadoop MapReduce Implementation
 
-This is my cloud computing coursework. The goal of this coursework is to use Hadoop in the GCP to create engrams from Books.
+This was my cloud computing coursework. The goal of this coursework is to use Hadoop in the GCP to create engrams from Books.
 The books are from a dataset of 10,000 text-based e-books pulled from [Project Gutenberg](http://www.gutenberg.org).
 
 It should be noted that the goal is to optimize the code to successfully create engrams as fast as possible, this can be achieved from both using the code and modifying the settings used to create the cluster.
@@ -12,6 +12,8 @@ Multiple engrams can be generated using the code found in this repository. The s
 Global alphabetic sorting was also implemented, meaning that letters are organised alphabetically throughout the reducer output files.
 
 Moreover, the program can detect if the number inputted is incorrect and use the default mapper instead, in this case it results in a 3-gram.
+
+It should be noted that the account used to create and run the Hadoop cluster was a basic student account in the GCP.
 
 # Modifications performed to achieve better performance
 
@@ -41,3 +43,7 @@ Memory was also increased in the heap memory of the mapper, which allows for les
 
 It is worth noting that Hadoop generally underperforms when it has many small files to go through as those result in a large number of splits. As such the last optimization performed was done to decrease the number of splits and create larger files. That was done using CombineTextInputFormat class. Furthermore, the split size was set as a maximum at 128 MB, thus resulting in smaller but larger splits that accelerated the mapping and reduce procedures, the key used was mapreduce.input.fileinputformat.split.maxsize and its value was set to 134217728. The key mapreduce.job.jvm.numtasks was also set to -1 to indicate to Hadoop to reduce the JVMs created.
 The Hadoop cluster used to process the 10 thousand books was set to the default values using the N1 series chip in standard configuration, the number of worker nodes was increased from 2 to 4 to allow for faster processing of the books.
+
+# Command to Create cluster used
+
+gcloud dataproc clusters create cluster-bb65 --region europe-west2 --zone europe-west2-c --master-machine-type n1-standard-4 --master-boot-disk-size 500 --num-workers 4 --worker-machine-type n1-standard-4 --worker-boot-disk-size 500 --image-version 2.0-debian10 --properties hdfs:fs.inmemory.size.mb=512,mapred:mapreduce.job.reduce.slowstart.completedmaps=0.15,mapred:mapreduce.map.combine.minspills=6,mapred:mapreduce.map.output.compress=true,mapred:mapreduce.map.output.compress.codec=org.apache.hadoop.io.compress.SnappyCodec,mapred:mapreduce.map.tasks.speculative.execution=true,mapred:mapreduce.output.compress.type=BLOCK,mapred:mapreduce.reduce.tasks.speculative.execution=true,mapred:mapreduce.task.io.sort.mb=512,mapred:mapreduce.input.fileinputformat.split.maxsize=134217728,mapred:mapreduce.job.jvm.numtasks=-1 --scopes 'https://www.googleapis.com/auth/cloud-platform' --project cloud-computing-330310
