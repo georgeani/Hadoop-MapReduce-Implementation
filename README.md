@@ -1,6 +1,6 @@
 # Hadoop MapReduce Implementation
 
-This is my cloud computing coursework. The goal of this coursework is to use Hadoop in the GCP to create engrams from the Books.
+This is my cloud computing coursework. The goal of this coursework is to use Hadoop in the GCP to create engrams from Books.
 The books are from a dataset of 10,000 text-based e-books pulled from [Project Gutenberg](http://www.gutenberg.org).
 
 It should be noted that the goal is to optimize the code to successfully create engrams as fast as possible, this can be achieved from both using the code and modifying the settings used to create the cluster.
